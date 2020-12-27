@@ -1,35 +1,55 @@
-\documentclass[12pt, a4paper, draft]{article}
+\documentclass[12pt, a4paper]{article}
 \usepackage{amsfonts}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\hypersetup{
+colorlinks=true,
+linkcolor=red,           
+}
 
 \title{Un Titre}
+
+\newcounter{NoDef}
+\newenvironment{definition}[1]{
+    \refstepcounter{NoDef}
+    
+    
+    \vspace{0.3cm}
+    \textbf{\textsc{définition \theNoDef:}} \textit{#1}\\
+}{
+
+\vspace{0.3cm}
+}
 
 
 \begin{document}
 \maketitle
 
 \section{Boosting}
-p130
-    Un outil d'apprentissage en machine learning
-    
-    permet de résoudre le problème du tradeoff biais-variance
-    et le problème est la complexité des calculs de l'apprentissage.
+    %p130
 
-    Un algo de boosting augmente la précision d'un weak learner.
-
-    Probably Approximately Correct (PAC) learning
-    
-    Un algorithme A est un $\gamma$ apprenant faible (weak learner) pour une classe $\mathcal{H}$
-    s'il existe une fonction $m_{\mathcal{H}}: (0,1) \rightarrow \mathbb{N}$ tel que 
-    $\forall \delta \in (0,1)$, pour toute distribution $\mathcal{D}$ sur $\mathcal{X}$ et pour
-    chaque fonction $f:\mathcal{X} \rightarrow \{\pm 1\}$,
-    si ... blablabla
-    l'algorithme retourne une hypotèse \textit{h} tel que $1- \delta, L_{(\mathcal{D}, f)}(H) \leq
-    \frac{1}{2} - \gamma$
-
-    Une classe d'hypothèses $\mathcal{H}$ est $\gamma$-weak-lernable s'il existe un 
-    $\gamma$ apprenant faible pour cette classe.
+    Le boosting est une méthode permettant d'augmenter les performances\\ d'algorithme apprenant
+    faible (voir def.~\ref{def:weaklearner}). Cette méthode permet aussi de résoudre deux problèmes
+    rencontrés lors de l'apprentissage:
+    \begin{enumerate}
+        \item Tradeoff biais-complexité
+        \item La complexité des calcules
+    \end{enumerate}
+    Le principe générale du boosting consiste à commencer avec une hypothèse de base,
+    qui est ajustée à chaque itérations de l'algorithme pour produire une hypothèse plus précise.
 
 
+    \begin{definition}{Hypothèse $\gamma$ apprenant faible}
+    Un algorithme \textit{A} est un $\gamma$ apprenant faible (weak learner) pour une classe
+    $\mathcal{H}$ s'il existe une fonction $m_{\mathcal{H}}: (0,1) \rightarrow \mathbb{N}$ tel que 
+    pour tout $\delta \in (0,1)$, pour toute distribution $\mathcal{D}$ sur $\mathcal{X}$ et pour
+    chaque fonction de labelisation $f:\mathcal{X} \rightarrow \{\pm 1\}$, si l'hypothèse est
+    valable pour $\mathcal{H}$, $\mathcal{D}$, $\mathcal{F}$, alors lors de l'execution de l'algorithme
+    d'apprentissage sur $m > m_{\mathcal{H}}(\delta)$ i.i.d exemples générés par $\mathcal{D}$ et
+    labelisés par $f$, l'algorithme retourne, avec une probabilité $1- \delta$, une hypotèse
+    \textit{h} tel que $L_{(\mathcal{D}, f)}(H) \leq \frac{1}{2} - \gamma$
+    \label{def:weaklearner}
+    \end{definition}
 
 
 
