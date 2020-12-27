@@ -28,19 +28,19 @@ linkcolor=red,
 \section{Boosting}
     %p130
 
-    Le boosting est une méthode permettant d'augmenter les performances\\ d'algorithme apprenant
-    faible (voir def.~\ref{def:weaklearner}). Cette méthode permet aussi de résoudre deux problèmes
+    Le boosting est une méthode permettant d'augmenter les performances\\ d'algorithmes apprenants
+    faibles (voir def.~\ref{def:weaklearner}). Cette méthode permet aussi de résoudre deux problèmes
     rencontrés lors de l'apprentissage:
     \begin{enumerate}
-        \item Tradeoff biais-complexité
-        \item La complexité des calcules
+        \item Le tradeoff biais-complexité
+        \item La complexité des calculs
     \end{enumerate}
-    Le principe générale du boosting consiste à commencer avec une hypothèse de base,
-    qui est ajustée à chaque itérations de l'algorithme pour produire une hypothèse plus précise.
+    Le principe général du boosting consiste à commencer par une hypothèse de base,
+    qui est ajustée à chaque itération de l'algorithme pour produire une hypothèse plus précise.
 
 
-    \begin{definition}{Hypothèse $\gamma$ apprenant faible}
-    Un algorithme \textit{A} est un $\gamma$ apprenant faible (weak learner) pour une classe
+    \begin{definition}{Algorithme $\gamma$ apprenant faible}
+    Un algorithme \textit{A} est $\gamma$ apprenant faible (weak learner) pour une classe
     $\mathcal{H}$ s'il existe une fonction $m_{\mathcal{H}}: (0,1) \rightarrow \mathbb{N}$ tel que 
     pour tout $\delta \in (0,1)$, pour toute distribution $\mathcal{D}$ sur $\mathcal{X}$ et pour
     chaque fonction de labelisation $f:\mathcal{X} \rightarrow \{\pm 1\}$, si l'hypothèse est
