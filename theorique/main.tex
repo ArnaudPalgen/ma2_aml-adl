@@ -1,0 +1,54 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage{amsfonts}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\hypersetup{
+colorlinks=true,
+linkcolor=red,           
+}
+
+\title{Un Titre}
+
+\newcounter{NoDef}
+\newenvironment{definition}[1]{
+    \refstepcounter{NoDef}
+    
+    
+    \vspace{0.3cm}
+    \textbf{\textsc{définition \theNoDef:}} \textit{#1}\\
+}{
+
+\vspace{0.3cm}
+}
+
+
+\begin{document}
+\maketitle
+
+\section{Boosting}
+    %p130
+
+    Le boosting est une méthode permettant d'augmenter les performances\\ d'algorithmes apprenants
+    faibles (voir def.~\ref{def:weaklearner}). Cette méthode permet aussi de résoudre deux problèmes
+    rencontrés lors de l'apprentissage:
+    \begin{enumerate}
+        \item Le tradeoff biais-complexité
+        \item La complexité des calculs
+    \end{enumerate}
+    Le principe général du boosting consiste à commencer par une hypothèse de base,
+    qui est ajustée à chaque itération de l'algorithme pour produire une hypothèse plus précise.
+
+
+    \begin{definition}{Algorithme $\gamma$ apprenant faible}
+    Un algorithme \textit{A} est $\gamma$ apprenant faible (weak learner) pour une classe
+    $\mathcal{H}$ s'il existe une fonction $m_{\mathcal{H}}: (0,1) \rightarrow \mathbb{N}$ tel que 
+    pour tout $\delta \in (0,1)$, pour toute distribution $\mathcal{D}$ sur $\mathcal{X}$ et pour
+    chaque fonction de labelisation $f:\mathcal{X} \rightarrow \{\pm 1\}$, si l'hypothèse est
+    valable pour $\mathcal{H}$, $\mathcal{D}$, $\mathcal{F}$, alors lors de l'execution de l'algorithme
+    d'apprentissage sur $m > m_{\mathcal{H}}(\delta)$ i.i.d exemples générés par $\mathcal{D}$ et
+    labelisés par $f$, l'algorithme retourne, avec une probabilité $1- \delta$, une hypotèse
+    \textit{h} tel que $L_{(\mathcal{D}, f)}(H) \leq \frac{1}{2} - \gamma$
+    \label{def:weaklearner}
+    \end{definition}
+
+\end{document}
