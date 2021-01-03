@@ -407,5 +407,8 @@ dmypy.json
 # IntelliJ
 *.idea/*
 
+#virtual environnement
+*.venv/
+
 # Visual Studio Code
 .vscode/
