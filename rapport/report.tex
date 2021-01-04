@@ -93,8 +93,7 @@
 	
 	\section{Principe du boosting}
 	
-	Le boosting est une méthode permettant d'augmenter les performances\\ d'algorithmes apprenants
-	faibles (voir def.~\ref{def:weaklearner}). Cette méthode permet aussi de résoudre deux problèmes
+	Le boosting est une méthode permettant d'augmenter les performances\\ d'algorithmes weak learner (voir def.~\ref{def:weaklearner}). Cette méthode permet aussi de résoudre deux problèmes
 	rencontrés lors de l'apprentissage:
 	\begin{enumerate}
 		\item Le tradeoff biais-complexité
@@ -104,27 +103,22 @@
 	qui est ajustée à chaque itération de l'algorithme pour produire une hypothèse plus précise.
 	
 	
-	\begin{definition}{Algorithme $\gamma$ apprenant faible}
-		
-		Un algorithme \textit{A} est $\gamma$ apprenant faible (weak learner) pour une classe
-		$\mathcal{H}$ s'il existe une fonction $m_{\mathcal{H}}: (0,1) \rightarrow \mathbb{N}$ tel que 
-		pour tout $\delta \in (0,1)$, pour toute distribution $\mathcal{D}$ sur $\mathcal{X}$ et pour
-		chaque fonction de labelisation $f:\mathcal{X} \rightarrow \{\pm 1\}$, si l'hypothèse est
-		valable pour $\mathcal{H}$, $\mathcal{D}$, $\mathcal{F}$, alors lors de l'execution de l'algorithme
-		d'apprentissage sur $m > m_{\mathcal{H}}(\delta)$ i.i.d exemples générés par $\mathcal{D}$ et
-		labelisés par $f$, l'algorithme retourne, avec une probabilité $1- \delta$, une hypotèse
-		\textit{h} tel que $L_{(\mathcal{D}, f)}(H) \leq \frac{1}{2} - \gamma$
+	\begin{definition}
+	Soit $f: \mathcal{X} \rightarrow \mathcal{Y}$ la fonction cible de labelisation et $\mathcal{D}$ une distribution des probabilités sur $\mathcal{X}$ qui assigne une probabilité à chaque élément de $\mathcal{X}$. On définit $L_{\mathcal(D),f}(h)$ comme étant l'erreur d'une hypothèse $h: \mathcal{X} \rightarrow \mathcal{Y}$ telle que $L_{(\mathcal{D},f)} = \underset{x \sim \mathcal{D}}{\mathbb{P}} [h(x) \neq f(x)]$.
+	\end{definition}	
+	
+	\begin{definition} Un algorithme \textit{A} est $\gamma$-weak learner pour une classe d'hypothèses $\mathcal{H}$ s'il existe une fonction $m_{\mathcal{H}}: (0,1) \rightarrow \mathbb{N}$ tel que pour tout $\delta \in (0,1)$, pour toute distribution des probabilités $\mathcal{D}$ sur $\mathcal{X}$ et pour chaque fonction de labelisation $f:\mathcal{X} \rightarrow \{\pm 1\}$, si on émet l'hypothèse qu'il existe une hypothèse $h \in \mathcal H$ telle que $L_{D,f}(h)=0$, alors lors de l'execution de l'algorithme d'apprentissage sur $m \geq m_{\mathcal{H}}(\delta)$ exemples (indépendants et identiquement distribués) générés par $\mathcal{D}$ et labelisés par $f$, l'algorithme retourne, avec une probabilité $1- \delta$, une hypotèse \textit{h} tel que $L_{(\mathcal{D}, f)}(h) \leq \frac{1}{2} - \gamma$
 		\label{def:weaklearner}
 	\end{definition}
 	
 	\renewcommand{\labelitemi}{$\bullet$}
 	\section{Adaboost}
 	
-	Adaboost (adaptative boosting) est une technique de boosting très répandue. L'article \cite{} (chapitre 10) présente son fonctionnement. Dans cette section, on explique le principe d'Adaboost et on présente son algorithme.  
+	Adaboost (adaptative boosting) est une technique de boosting très répandue. L'article \cite{Bousquet2003-oz} (chapitre 10) présente son fonctionnement. Dans cette section, on explique le principe d'Adaboost et on présente son algorithme.  
 	
 	\subsection{Principe}
 	
-	Le principe d'Adaboost est de modifier le processus d'apprentissage d'un weak learner pour que celui-ci se concentre sur les exemples les plus pertinents. Adaboost va en fait itérer un certain nombre de fois le même procédé. A chaque étape, le weak learner s'entraine sur le même jeu de données mais ne considère pas de la même façon les exemples par rapport à l'étape précédentes. Il se concentre en fait sur les exemples les plus problématiques, ceux-ci sont désignés par Adaboost. Adaboost répète ce procédé un certain nombre de fois et ensuite combine les différentes hypothèses obtenues à chaque étape pour fournir l'hypothèse finale. Le but d'Adaboost est de tirer le meilleur profit possible du tradeoff biais-variance en essayant d'avoir une hypothèse finale avec une erreur d'entrainement la plus petite possible sans être trop complexe.
+	Le principe d'Adaboost est de modifier le processus d'apprentissage d'un weak learner pour que celui-ci se concentre sur les exemples les plus pertinents. Adaboost va en fait itérer un certain nombre de fois le même procédé. A chaque étape, le weak learner s'entraine sur le même jeu de données mais ne considère pas de la même façon les exemples par rapport à l'étape précédente. Il se concentre en fait sur les exemples les plus problématiques, ceux-ci sont désignés par Adaboost. Adaboost répète ce procédé un certain nombre de fois et ensuite combine les différentes hypothèses obtenues à chaque étape pour fournir l'hypothèse finale. Le but d'Adaboost est de tirer le meilleur profit possible du tradeoff biais-variance en essayant d'avoir une hypothèse finale avec une erreur d'entrainement la plus petite possible sans être trop complexe.
 	
 	\subsection{Algorithme}
 	
@@ -132,17 +126,17 @@
 	
 	\subsubsection{Description}
 	
-	Soit $f$ une fonction cible, soit $S=(x_1,y_1),(x_2,y_2),...,(x_n,y_n)$ le jeu de données d'entrainement tel que $\forall i, 1 \geq i \geq m, f(x_i) = y_i$, soit $T \geq 1$ un naturel (non nul) représentant le nombre d'itérations de l'algorithme Adaboost. D'abord, Adaboost génère une distribution $D^{(0)} \in R^m_+$ telle que $\forall i, 1 \geq i \geq m, D^{(0)}_i = \frac{1}{m}$ (distribution équitable). Cette distribution représente l'importance que doit accorder le weak learner à chaque exemple. De fait, plus le poids $D^{(t)}_i$ ($1 \geq i \geq m$ et $1 \geq t \geq T$) est grand, plus celui-ci doit accorder d'importance à l'exemple $(x_i,y_i)$ et inversement. Une fois que cela est fait, Adaboost va itérer $T$ fois le même procédé. A chaque itération, le weak learner s'entraine sur le jeu de données $S$. L'erreur d'entrainement $E_t(h_t)$ du weak learner est calculée en prenant compte de $D^{(t)}$:
+	Soit $f$ une fonction cible, soit $S=(x_1,y_1),(x_2,y_2),...,(x_n,y_n)$ le jeu de données d'entrainement tel que $\forall i, 1 \leq i \leq m, f(x_i) = y_i$, soit $T \geq 1$ un naturel (non nul) représentant le nombre d'itérations de l'algorithme Adaboost. D'abord, Adaboost génère une distribution $D^{(0)} \in \mathbb{R}^m_+$ telle que $\forall i, 1 \leq i \leq m, D^{(0)}_i = \frac{1}{m}$ (distribution équitable). Cette distribution représente l'importance que doit accorder le weak learner à chaque exemple. De fait, plus le poids $D^{(t)}_i$ ($1 \leq i \leq m$ et $1 \leq t \leq T$) est grand, plus celui-ci doit accorder d'importance à l'exemple $(x_i,y_i)$ et inversement. Une fois que cela est fait, Adaboost va itérer $T$ fois le même procédé. A chaque itération, le weak learner s'entraine sur le jeu de données $S$. L'erreur d'entrainement $R_m(h_t)$ du weak learner est calculée en prenant compte de $D^{(t)}$:
 	\begin{equation}
 		\label{adaboost:trainingerror}
-		E_t(h_t) = \sum_{i=1}^m D^{(t)}_i \mathbb{1}_{[h_t(x_i) \neq y_i]}
+		R_m(h_t) = \sum_{i=1}^m D^{(t)}_i \mathbb{1}_{[h_t(x_i) \neq y_i]}
 	\end{equation}
-	Comme on le voit dans (\ref{adaboost:trainingerror}), plus le poids d'un exemple (dans $D^{(t)}$) est grand, plus il a d'importance dans le calcul de l'erreur. De plus, par définition du weak learner, il y a une grande probabilité ($1- \delta$) que $E_t(h_t)< \frac{1}{2} - \gamma$. Ainsi, à l'itération $t$, le weak learner fournit une hypothèse $h_t$ et l'erreur $E_t(h_t)$ associée (\ref{adaboost:trainingerror}), Adaboost détermine ensuite la nouvelle distribution $D^{(t+1)}$ (\ref{adaboost:newdistrib}) et passe à l'itération $t+1$. Une fois que les $T$ itérations sont terminées, Adaboost combine les différentes hypothèses $h_t$ pour obtenir l'hypothèse finale $h_f$:
+	Comme on le voit dans (\ref{adaboost:trainingerror}), plus le poids d'un exemple (dans $D^{(t)}$) est grand, plus il a d'importance dans le calcul de l'erreur. De plus, par définition du weak learner, il y a une grande probabilité ($1- \delta$) que $R_m(h_t)< \frac{1}{2} - \gamma$. Ainsi, à l'itération $t$, le weak learner fournit une hypothèse $h_t$ et l'erreur $R_m(h_t)$ associée (\ref{adaboost:trainingerror}), Adaboost détermine ensuite la nouvelle distribution $D^{(t+1)}$ (\ref{adaboost:newdistrib}) et passe à l'itération $t+1$. Une fois que les $T$ itérations sont terminées, Adaboost combine les différentes hypothèses $h_t$ pour obtenir l'hypothèse finale $h$:
 	\begin{equation}
 		\label{adaboost:finalhypo}
-		h_f(x) = sign (\sum_{t=1}^T w_t h_t(x))
+		h(x) = sign (\sum_{t=1}^T w_t h_t(x))
 	\end{equation}
-	Dans (\ref{adaboost:finalhypo}), on remarque que l'hypothèse $h_t$ a un poids $w_t$, celui-ci est en fait calculé à l'itération $t$ après le calcul de l'erreur: $w_t = \frac{1}{2} log(\frac{1}{E_t(h_t)} - 1)$. Plus l'erreur d'entrainement de l'hypothèse $h_t$ est petite, plus elle aura d'importance dans l'hypothèse finale $h_f$ et inversement. Adaboost essaie ainsi de donner plus d'importances aux hypothèses prometteuses qu'aux hypothèses moins performantes.
+	Dans (\ref{adaboost:finalhypo}), on remarque que l'hypothèse $h_t$ a un poids $w_t$, celui-ci est en fait calculé à l'itération $t$ après le calcul de l'erreur: $w_t = \frac{1}{2} log(\frac{1}{R_m(h_t)} - 1)$. Plus l'erreur d'entrainement de l'hypothèse $h_t$ est petite, plus elle aura d'importance dans l'hypothèse finale $h$ et inversement. Adaboost essaie ainsi de donner plus d'importances aux hypothèses prometteuses qu'aux hypothèses moins performantes.
 	
 	
 	\subsubsection{Modification de la distribution $D$}
@@ -150,15 +144,15 @@
 	Adaboost modifie donc la distribution $D^{(t)}$ après chaque itération: 
 	\begin{equation}
 		\label{adaboost:weights}
-		\forall i, 1 \geq i \geq m, D^{(t+1)}_i = \frac{D^{(t)}_i e^{-w_t y_i h_t(x_i)}}{\sum_{j=1}^m D^{(t)}_j e^{-w_t y_j h_t(x_j)}} 
+		\forall i, 1 \leq i \leq m, D^{(t+1)}_i = \frac{D^{(t)}_i e^{-w_t y_i h_t(x_i)}}{\sum_{j=1}^m D^{(t)}_j e^{-w_t y_j h_t(x_j)}} 
 	\end{equation}   
-	Dans (\ref{adaboost:weights}) on remarque que le nouveau poids $D^{(t+1)}_i$ de l'exemple $(x_i,y_i)$ est proportionnel à son ancien poids $D^{t}_i$, cela permet à Adaboost de limiter la variance. De plus, si on suppose que $w_t > 0$ (ce qui est vrai dans la majorité des cas car $w_t > 0 \Leftrightarrow E_t(h_t) < \frac{1}{2}$ et il y a une probabilité supérieure à $1-\delta$ que cela soit vrai (en effet, $E_t(h_t) < \frac{1}{2} - \gamma$ avec une probabilité $1-\delta$)), on a que:
+	Dans (\ref{adaboost:weights}) on remarque que le nouveau poids $D^{(t+1)}_i$ de l'exemple $(x_i,y_i)$ est proportionnel à son ancien poids $D^{t}_i$, cela permet à Adaboost de limiter la variance. De plus, si on suppose que $w_t > 0$ (ce qui est vrai dans la majorité des cas car $w_t > 0 \Leftrightarrow R_m(h_t) < \frac{1}{2}$ et il y a une probabilité supérieure à $1-\delta$ que cela soit vrai (en effet, $R_m(h_t) < \frac{1}{2} - \gamma$ avec une probabilité $1-\delta$)), on a que:
 	\begin{itemize}
 		\item si $sign(y_i)=sign(h_t(x_i))$ alors $e^{-w_t y_i h_t(x_i)} < 1$,
 		\item si $sign(y_i) \neq sign(h_t(x_i))$ alors $e^{-w_t y_i h_t(x_i)} > 1$. 
 	\end{itemize}
 	Ainsi, si l'hypothèse $h_t$ avait fait la bonne prédiction pour l'exemple $(x_i,y_i)$ alors le nouveau poids $D^{(t+1)}_i$ sera plus grand que si elle s'était trompée. Cela est en accord avec le fait qu'Adaboost incite le weak learner à se concentrer sur les exemples problématiques (et donc pertinents).
-	Le dénominateur est uniquement la pour normaliser et assurer la définition de distribution: $\forall 1 \geq t \geq T, \sum_{i=1}^m D^t_i = 1$.
+	Le dénominateur est uniquement la pour normaliser et assurer la définition de distribution: $\forall 1 \leq t \leq T, \sum_{i=1}^m D^t_i = 1$.
 	
 	
 	\begin{algorithm}[H]
@@ -175,14 +169,14 @@
 			\State $D^{(1)}=(\frac{1}{m},...,\frac{1}{m})$
 			\For {$t=1,...,T$}
 			\State $h_t = WL(D^{(t)},S)$
-			\State $E_t(h_t)= \sum_{i=1}^m D^{(t)}_i \mathbb{1}_{[h_t(x_i) \neq y_i]}$
+			\State $R_m(h_t)= \sum_{i=1}^m D^{(t)}_i \mathbb{1}_{[h_t(x_i) \neq y_i]}$
 			\State $w_t = \frac{1}{2} log(\frac{1}{E_t(h_t)} - 1)$
 			\For {$i=1,...,m$}
 			\State $D^{(t+1)}_i = \frac{D^{(t)}_i e^{-w_t y_i h_t(x_i)}}{\sum_{j=1}^m D^{(t)}_j e^{-w_t y_j h_t(x_j)}}$ 
 			\EndFor
 			\EndFor
-			\State $h_f(x) = sign (\sum_{t=1}^T w_t h_t(x))$
-			\State \Return {$h_f$}
+			\State $h(x) = sign (\sum_{t=1}^T w_t h_t(x))$
+			\State \Return {$h$}
 			\EndFunction
 		\end{algorithmic}
 	\end{algorithm}
