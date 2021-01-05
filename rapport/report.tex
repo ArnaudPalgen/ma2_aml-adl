@@ -93,79 +93,79 @@
 	
 	\section{Principe du boosting}
 	
-	Le boosting est une méthode permettant d'augmenter les performances\\ d'algorithmes weak learner (voir def.~\ref{def:weaklearner}). Cette méthode permet aussi de résoudre deux problèmes
+	Le boosting est une méthode permettant d'augmenter les performances\\ d'algorithmes weak learners (voir def.~\ref{def:weaklearner}). Cette méthode permet aussi de résoudre deux problèmes
 	rencontrés lors de l'apprentissage:
 	\begin{enumerate}
 		\item Le tradeoff biais-complexité
-		\item La complexité des calculs
+		\item La complexité des calculs.
 	\end{enumerate}
 	Le principe général du boosting consiste à commencer par une hypothèse de base,
 	qui est ajustée à chaque itération de l'algorithme pour produire une hypothèse plus précise.
 	
 	
 	\begin{definition}
-	Soit $f: \mathcal{X} \rightarrow \mathcal{Y}$ la fonction cible de labelisation et $\mathcal{D}$ une distribution des probabilités sur $\mathcal{X}$ qui assigne une probabilité à chaque élément de $\mathcal{X}$. On définit $L_{\mathcal(D),f}(h)$ comme étant l'erreur d'une hypothèse $h: \mathcal{X} \rightarrow \mathcal{Y}$ telle que $L_{(\mathcal{D},f)} = \underset{x \sim \mathcal{D}}{\mathbb{P}} [h(x) \neq f(x)]$.
+	Soit $f: \mathcal{X} \rightarrow \mathcal{Y}$ la fonction cible de labellisation et $\mathcal{D}$ une distribution des probabilités sur $\mathcal{X}$ qui assigne une probabilité à chaque élément de $\mathcal{X}$. On définit $L_{(\mathcal{D},f)}(h)$ comme étant l'erreur d'une hypothèse $h: \mathcal{X} \rightarrow \mathcal{Y}$ telle que $L_{(\mathcal{D},f)} = \underset{x \sim \mathcal{D}}{\mathbb{P}} [h(x) \neq f(x)]$.
 	\end{definition}	
 	
-	\begin{definition} Un algorithme \textit{A} est $\gamma$-weak learner pour une classe d'hypothèses $\mathcal{H}$ s'il existe une fonction $m_{\mathcal{H}}: (0,1) \rightarrow \mathbb{N}$ tel que pour tout $\delta \in (0,1)$, pour toute distribution des probabilités $\mathcal{D}$ sur $\mathcal{X}$ et pour chaque fonction de labelisation $f:\mathcal{X} \rightarrow \{\pm 1\}$, si on émet l'hypothèse qu'il existe une hypothèse $h \in \mathcal H$ telle que $L_{D,f}(h)=0$, alors lors de l'execution de l'algorithme d'apprentissage sur $m \geq m_{\mathcal{H}}(\delta)$ exemples (indépendants et identiquement distribués) générés par $\mathcal{D}$ et labelisés par $f$, l'algorithme retourne, avec une probabilité $1- \delta$, une hypotèse \textit{h} tel que $L_{(\mathcal{D}, f)}(h) \leq \frac{1}{2} - \gamma$
+	\begin{definition} Un algorithme \textit{A} est un $\gamma$-weak learner pour une classe d'hypothèses $\mathcal{H}$ s'il existe une fonction $m_{\mathcal{H}}: (0,1) \rightarrow \mathbb{N}$ telle que, pour tout $\delta \in (0,1)$, pour toute distribution des probabilités $\mathcal{D}$ sur $\mathcal{X}$ et pour chaque fonction de labellisation $f:\mathcal{X} \rightarrow \{\pm 1\}$, si on émet l'hypothèse qu'il existe une hypothèse $h \in \mathcal H$ telle que $L_{D,f}(h)=0$, alors, lors de l'execution de l'algorithme d'apprentissage sur $m \geq m_{\mathcal{H}}(\delta)$ exemples (indépendants et identiquement distribués) générés par $\mathcal{D}$ et labelisés par $f$, l'algorithme retourne, avec une probabilité $1- \delta$, une hypothèse \textit{h} tel que $L_{(\mathcal{D}, f)}(h) \leq \frac{1}{2} - \gamma$.
 		\label{def:weaklearner}
 	\end{definition}
 	
 	\renewcommand{\labelitemi}{$\bullet$}
-	\section{Adaboost}
+	\section{AdaBoost}
 	
-	Adaboost (adaptative boosting) est une technique de boosting très répandue. L'article \cite{Bousquet2003-oz} (chapitre 10) présente son fonctionnement. Dans cette section, on explique le principe d'Adaboost et on présente son algorithme.  
+	AdaBoost (adaptative boosting) est une technique de boosting très répandue. L'article \cite{Bousquet2003-oz} (chapitre 10) présente son fonctionnement. Dans cette section, on explique le principe d'AdaBoost et on présente son algorithme.  
 	
 	\subsection{Principe}
 	
-	Le principe d'Adaboost est de modifier le processus d'apprentissage d'un weak learner pour que celui-ci se concentre sur les exemples les plus pertinents. Adaboost va en fait itérer un certain nombre de fois le même procédé. A chaque étape, le weak learner s'entraine sur le même jeu de données mais ne considère pas de la même façon les exemples par rapport à l'étape précédente. Il se concentre en fait sur les exemples les plus problématiques, ceux-ci sont désignés par Adaboost. Adaboost répète ce procédé un certain nombre de fois et ensuite combine les différentes hypothèses obtenues à chaque étape pour fournir l'hypothèse finale. Le but d'Adaboost est de tirer le meilleur profit possible du tradeoff biais-variance en essayant d'avoir une hypothèse finale avec une erreur d'entrainement la plus petite possible sans être trop complexe.
+	Le principe d'AdaBoost est de modifier le processus d'apprentissage d'un weak learner pour que celui-ci se concentre sur les exemples les plus pertinents. AdaBoost va en fait itérer un certain nombre de fois le même procédé. A chaque étape, le weak learner s'entraine sur le même jeu de données mais ne considère pas de la même façon les exemples par rapport à l'étape précédente. Il se concentre en fait sur les exemples les plus problématiques, ceux-ci sont désignés par AdaBoost. AdaBoost répète ce procédé un certain nombre de fois et combine ensuite les différentes hypothèses obtenues à chaque étape pour fournir l'hypothèse finale. Le but d'AdaBoost est de tirer le meilleur profit possible du tradeoff biais-complexité en essayant d'avoir une hypothèse finale avec une erreur d'entrainement la plus petite possible sans être trop complexe.
 	
 	\subsection{Algorithme}
 	
-	On présente maintenant l'algorithme d'Adaboost, on fournit d'abord une description étape par étape et on rentre ensuite dans les détails des points importants. Le pseudo-code du processus Adaboost est repris par l'algorithme \ref{adaboost:algo}.
+	On présente maintenant l'algorithme d'AdaBoost. On fournit d'abord une description étape par étape et on rentre ensuite dans les détails des points importants. Le pseudo-code du processus AdaBoost est repris par l'algorithme \ref{adaboost:algo}.
 	
 	\subsubsection{Description}
 	
-	Soit $f$ une fonction cible, soit $S=(x_1,y_1),(x_2,y_2),...,(x_n,y_n)$ le jeu de données d'entrainement tel que $\forall i, 1 \leq i \leq m, f(x_i) = y_i$, soit $T \geq 1$ un naturel (non nul) représentant le nombre d'itérations de l'algorithme Adaboost. D'abord, Adaboost génère une distribution $D^{(0)} \in \mathbb{R}^m_+$ telle que $\forall i, 1 \leq i \leq m, D^{(0)}_i = \frac{1}{m}$ (distribution équitable). Cette distribution représente l'importance que doit accorder le weak learner à chaque exemple. De fait, plus le poids $D^{(t)}_i$ ($1 \leq i \leq m$ et $1 \leq t \leq T$) est grand, plus celui-ci doit accorder d'importance à l'exemple $(x_i,y_i)$ et inversement. Une fois que cela est fait, Adaboost va itérer $T$ fois le même procédé. A chaque itération, le weak learner s'entraine sur le jeu de données $S$. L'erreur d'entrainement $R_m(h_t)$ du weak learner est calculée en prenant compte de $D^{(t)}$:
+	Soit $f$ une fonction cible et $S=(x_1,y_1),(x_2,y_2),...,(x_n,y_n)$ le jeu de données d'entrainement tel que $\forall 1 \leq i \leq m, f(x_i) = y_i$. Soit $T \geq 1$ un naturel représentant le nombre d'itérations de l'algorithme AdaBoost. D'abord, AdaBoost génère une distribution $D^{(0)} \in \mathbb{R}^m_+$ telle que $\forall 1 \leq i \leq m, D^{(0)}_i = \frac{1}{m}$ (distribution équitable). Cette distribution représente l'importance que doit accorder le weak learner à chaque exemple. De fait, plus le poids $D^{(t)}_i$ ($1 \leq i \leq m$ et $1 \leq t \leq T$) est grand, plus celui-ci doit accorder d'importance à l'exemple $(x_i,y_i)$ et inversement. Une fois que cela est fait, AdaBoost va itérer $T$ fois le même procédé. A chaque itération, le weak learner s'entraine sur le jeu de données $S$. L'erreur d'entrainement $R_m(h_t)$ du weak learner est calculée selon $D^{(t)}$:
 	\begin{equation}
 		\label{adaboost:trainingerror}
 		R_m(h_t) = \sum_{i=1}^m D^{(t)}_i \mathbb{1}_{[h_t(x_i) \neq y_i]}
 	\end{equation}
-	Comme on le voit dans (\ref{adaboost:trainingerror}), plus le poids d'un exemple (dans $D^{(t)}$) est grand, plus il a d'importance dans le calcul de l'erreur. De plus, par définition du weak learner, il y a une grande probabilité ($1- \delta$) que $R_m(h_t)< \frac{1}{2} - \gamma$. Ainsi, à l'itération $t$, le weak learner fournit une hypothèse $h_t$ et l'erreur $R_m(h_t)$ associée (\ref{adaboost:trainingerror}), Adaboost détermine ensuite la nouvelle distribution $D^{(t+1)}$ (\ref{adaboost:newdistrib}) et passe à l'itération $t+1$. Une fois que les $T$ itérations sont terminées, Adaboost combine les différentes hypothèses $h_t$ pour obtenir l'hypothèse finale $h$:
+	Comme on le voit dans (\ref{adaboost:trainingerror}), plus le poids d'un exemple (dans $D^{(t)}$) est grand, plus il a d'importance dans le calcul de l'erreur. De plus, par définition du weak learner, il y a une grande probabilité ($1- \delta$) que $R_m(h_t)< \frac{1}{2} - \gamma$. Ainsi, à l'itération $t$, le weak learner fournit une hypothèse $h_t$ et l'erreur $R_m(h_t)$ associée (\ref{adaboost:trainingerror}). AdaBoost détermine ensuite la nouvelle distribution $D^{(t+1)}$ (\ref{adaboost:newdistrib}) et passe à l'itération $t+1$. Une fois que les $T$ itérations sont terminées, AdaBoost combine les différentes hypothèses $h_t$ pour obtenir l'hypothèse finale $h$:
 	\begin{equation}
 		\label{adaboost:finalhypo}
 		h(x) = sign (\sum_{t=1}^T w_t h_t(x))
 	\end{equation}
-	Dans (\ref{adaboost:finalhypo}), on remarque que l'hypothèse $h_t$ a un poids $w_t$, celui-ci est en fait calculé à l'itération $t$ après le calcul de l'erreur: $w_t = \frac{1}{2} log(\frac{1}{R_m(h_t)} - 1)$. Plus l'erreur d'entrainement de l'hypothèse $h_t$ est petite, plus elle aura d'importance dans l'hypothèse finale $h$ et inversement. Adaboost essaie ainsi de donner plus d'importances aux hypothèses prometteuses qu'aux hypothèses moins performantes.
+	Dans (\ref{adaboost:finalhypo}), on remarque que l'hypothèse $h_t$ a un poids $w_t$. Celui-ci est en fait calculé à l'itération $t$ après le calcul de l'erreur: $w_t = \frac{1}{2} log(\frac{1}{R_m(h_t)} - 1)$. Plus l'erreur d'entrainement de l'hypothèse $h_t$ est petite, plus elle aura d'importance dans l'hypothèse finale $h$ et inversement. AdaBoost essaie ainsi de donner plus d'importances aux hypothèses prometteuses qu'aux hypothèses moins performantes.
 	
 	
 	\subsubsection{Modification de la distribution $D$}
 	\label{adaboost:newdistrib}
-	Adaboost modifie donc la distribution $D^{(t)}$ après chaque itération: 
+	AdaBoost modifie donc la distribution $D^{(t)}$ après chaque itération: 
 	\begin{equation}
 		\label{adaboost:weights}
-		\forall i, 1 \leq i \leq m, D^{(t+1)}_i = \frac{D^{(t)}_i e^{-w_t y_i h_t(x_i)}}{\sum_{j=1}^m D^{(t)}_j e^{-w_t y_j h_t(x_j)}} 
+		\forall 1 \leq i \leq m, D^{(t+1)}_i = \frac{D^{(t)}_i e^{-w_t y_i h_t(x_i)}}{\sum_{j=1}^m D^{(t)}_j e^{-w_t y_j h_t(x_j)}} 
 	\end{equation}   
-	Dans (\ref{adaboost:weights}) on remarque que le nouveau poids $D^{(t+1)}_i$ de l'exemple $(x_i,y_i)$ est proportionnel à son ancien poids $D^{t}_i$, cela permet à Adaboost de limiter la variance. De plus, si on suppose que $w_t > 0$ (ce qui est vrai dans la majorité des cas car $w_t > 0 \Leftrightarrow R_m(h_t) < \frac{1}{2}$ et il y a une probabilité supérieure à $1-\delta$ que cela soit vrai (en effet, $R_m(h_t) < \frac{1}{2} - \gamma$ avec une probabilité $1-\delta$)), on a que:
+	Dans (\ref{adaboost:weights}) on remarque que le nouveau poids $D^{(t+1)}_i$ de l'exemple $(x_i,y_i)$ est proportionnel à son ancien poids $D^{t}_i$, cela permet à AdaBoost de limiter la variance. De plus, si on suppose que $w_t > 0$ (ce qui est vrai dans la majorité des cas car $w_t > 0 \Leftrightarrow R_m(h_t) < \frac{1}{2}$ et il y a une probabilité supérieure à $1-\delta$ que cela soit vrai (en effet, $R_m(h_t) < \frac{1}{2} - \gamma$ avec une probabilité $1-\delta$)), on a que:
 	\begin{itemize}
 		\item si $sign(y_i)=sign(h_t(x_i))$ alors $e^{-w_t y_i h_t(x_i)} < 1$,
 		\item si $sign(y_i) \neq sign(h_t(x_i))$ alors $e^{-w_t y_i h_t(x_i)} > 1$. 
 	\end{itemize}
-	Ainsi, si l'hypothèse $h_t$ avait fait la bonne prédiction pour l'exemple $(x_i,y_i)$ alors le nouveau poids $D^{(t+1)}_i$ sera plus grand que si elle s'était trompée. Cela est en accord avec le fait qu'Adaboost incite le weak learner à se concentrer sur les exemples problématiques (et donc pertinents).
-	Le dénominateur est uniquement la pour normaliser et assurer la définition de distribution: $\forall 1 \leq t \leq T, \sum_{i=1}^m D^t_i = 1$.
+	Ainsi, si l'hypothèse $h_t$ avait fait la bonne prédiction pour l'exemple $(x_i,y_i)$ alors le nouveau poids $D^{(t+1)}_i$ sera plus grand que si elle s'était trompée. Cela est en accord avec le fait qu'AdaBoost incite le weak learner à se concentrer sur les exemples problématiques (et donc pertinents).
+	Le dénominateur est uniquement là pour normaliser et assurer la définition de distribution: $\forall 1 \leq t \leq T, \sum_{i=1}^m D^t_i = 1$.
 	
 	
 	\begin{algorithm}[H]
-		\caption{Adaboost}
+		\caption{AdaBoost}
 		\label{adaboost:algo}
 		\begin{flushleft}
 			\textbf{INPUT:} $S=(x_1,y_1)(x_2,y_2),...,(x_m,y_m)$, le jeu de données d'entrainement,\\
 			\hspace{1.5cm} $WL$, un weak learner,\\
-			\hspace{1.5cm} $T$, un naturel (non nul) représentant le nombre d'itérations d'Adaboost.\\
+			\hspace{1.5cm} $T$, un naturel (non nul) représentant le nombre d'itérations d'AdaBoost.\\
 			\textbf{OUTPUT:} l'hypothèse finale $h_f$
 		\end{flushleft}
 		\begin{algorithmic}[1]
-			\Function{$Adaboost$}{$S,WL,T$}
+			\Function{$AdaBoost$}{$S,WL,T$}
 			\State $D^{(1)}=(\frac{1}{m},...,\frac{1}{m})$
 			\For {$t=1,...,T$}
 			\State $h_t = WL(D^{(t)},S)$
@@ -183,14 +183,13 @@
 	
 	\section{Bornes sur l’erreur de généralisation}
 	
-	On montre maintenant comment obtenir des bornes sur l'erreur de généralisation d'AdaBoost.
-	Nous commençons par obtenir la dimension VC d'AdaBoost, puis nous appliquons l'inégalité VC.
-	Cette approche est tirée du livre \cite{Shalev-Shwartz2014-ba}, et des détails supplémentaires ont été ajoutés.
+	Nous montrons maintenant comment obtenir des bornes sur l'erreur de généralisation d'AdaBoost.
+	Nous commençons par obtenir la dimension VC d'AdaBoost, puis nous appliquons une inégalité basée sur l'inégalité de Hoeffding.
+	Le développement concernant la dimension VC est tiré du livre \cite{Shalev-Shwartz2014-ba}, et des détails supplémentaires ont été ajoutés.
 	
-	Nous avons vu que la sortie de l'algorithme AdaBoost est une hypothèse composée d'une combinaison linéaire d'hypothèses faibles.
-	AdaBoost se base sur un weak-learner dont l'espace d'hypothèses est dénoté $B$.
-	$T$ hypothèses $h_1, ..., h_T$ sont créées par ce weak-learner.
-	La sortie d'AdaBoost fait partie de cet ensemble d'hypothèses :
+	Nous avons vu que la sortie de l'algorithme AdaBoost est une hypothèse composée d'une combinaison linéaire de $T$ hypothèses $h_1, ..., h_T$ apprises par un weak learner.
+	Nous dénotons l'espace d'hypothèses de ce weak learner par $B$.
+	La sortie d'AdaBoost fait partie de cet ensemble d'hypothèses que nous nommons L(B, T) :
 	\[
 	L(B, T) = \Set{ x \mapsto \text{sign}\left( \sum_{t=1}^T w_t h_t(x) \right) \mid \forall t, w_t \in \R \land h_t \in B}.
 	\]
@@ -208,7 +207,7 @@
 	\begin{proof}
 	
 	Dénotons $d = d_{VC}(B)$ et supposons que $T \geq 3$ et $d_{VC}(B) \geq 3$.
-	Soit $C = (x_1, ..., x_m)$ une séquence de points qui est shattered par $L(B, T)$.
+	Soit $C = (x_1, ..., x_m)$ une séquence de points qui est "shattered" par $L(B, T)$: chacun des $2^m$ labellings différents est générable par une hypothèse qui se trouve dans $L(B, T)$.
 	La création d'un labeling de $C$ par une hypothèse $h \in L(B, T)$ se fait en 2 étapes.
 	D'abord, $T$ hypothèses $h_1, ..., h_T \in B$ sont sélectionnées par le weak-learner.
 	Ensuite, un vecteur $w \in \R^T$ permet de créer la combinaison linéaire $\sum_{t=1}^T w_t h_t(x)$ pour un point $x$.
@@ -249,7 +248,7 @@
 	\forall a > 0, x \leq a \ln(x) \implies x \leq 2 a \ln(a).
 	\]
 	
-	On déduit une borne sur $m$ qu'on borne encore par une expression plus simple :
+	On déduit de ce dernier lemme une borne sur $m$, qu'on borne encore par une expression plus simple :
 	\[
 	m \leq \frac{2 (d + 1) T}{\ln(2)} \ln \frac{(d + 1) T}{\ln(2)} \leq (d + 1) T (3 \ln((d + 1) T) + 2).
 	\]
@@ -257,18 +256,20 @@
 	En d'autres termes, le nombre de points $m$ qui peuvent être shattered par $L(B, T)$ est borné supérieurement par une expression qui dépend de $d$ et $T$.
 	Puisque la dimension VC correspond au nombre maximum de points qui peuvent être shattered, l'expression reste vraie lorsque $m = d_{VC}(L(B, T))$ :
 	\[
-	d_{VC}(L(B, T)) \leq m \leq (d + 1) T (3 \ln((d + 1) T) + 2).
+	d_{VC}(L(B, T)) \leq (d + 1) T (3 \ln((d + 1) T) + 2).
 	\]
 	\end{proof}
-	
-	Il ne reste plus qu'à utiliser l'inégalité VC en bornant la growth function par le lemme de Sauer pour avoir une borne sur l'erreur de généralisation.
-	Nous utilisons l'inégalité VC présentée dans \cite{Bousquet2003-oz} à la page 192.
+
+	Il ne reste plus qu'à borner l'erreur de généralisation en utilisant cette dimension VC.
+	Il est possible de dériver une inégalité basée sur l'inégalité de Hoeffding qui tire profit de la growth function.
+	Celle-ci est présentée dans \cite{Bousquet2003-oz} à la page 192 et est reprise à l'équation \ref{eq:vc_inequality}.
+	Le lemme de Sauer permet de la borner par une expression dépendant de la dimension VC d'AdaBoost à l'équation \ref{eq:vc_inequality_sauer}.
 	
 	En supposant que la loss produit des valeurs bornées dans $[0, 1]$, pour toute précision $\epsilon > 0$, on obtient :
-	\begin{align*}
-	\mathbb{P}\left[ \sup_{h \in L(B, T)} (R(h) - R_m(h)) \geq \epsilon \right] &\leq 4 m_{L(B, T)}(2 m) e^{-m \epsilon^2 / 8} \\
-	&\leq 4 \left( \frac{2 m e}{d_{VC}(L(B, T))} \right)^{d_{VC}(L(B, T))} e^{-m \epsilon^2 / 8}.
-	\end{align*}
+	\begin{align}
+	\mathbb{P}\left[ \sup_{h \in L(B, T)} (R(h) - R_m(h)) \geq \epsilon \right] &\leq 4 m_{L(B, T)}(2 m) e^{-m \epsilon^2 / 8} \label{eq:vc_inequality} \\
+	&\leq 4 \left( \frac{2 m e}{d_{VC}(L(B, T))} \right)^{d_{VC}(L(B, T))} e^{-m \epsilon^2 / 8}. \label{eq:vc_inequality_sauer}
+	\end{align}
 
 	Un point important de ce développement est que la dimension VC de l'ensemble des hypothèse produites par AdaBoost augmente linéairement avec la dimension VC de $B$ et avec $T$, en ignorant les facteurs constants et logarithmiques.
 	
