@@ -91,6 +91,10 @@
 \begin{document}
 	\maketitle
 	
+	\section{Introduction}
+	
+	Dans le domaine du machine learning, on recherche l'hypothèse qui s'approche le plus d'une fonction cible. Cette recherche peut être couteuse en temps de calcul et si celle-ci est trop poussée, l'hypothèse résultante pourrait être trop complexe et trop spécifique au jeu de données d'entrainement (tradeoff biais-complexité). Pour solutionner ces problèmes, on utilise le boosting: une approche permettant d'augmenter les performances d'algorithmes de recherche d'hypothèse simples (weak learners). Tout d'abord, on explique le principe général du boosting. Ensuite, on présente en détails un algorithme de boosting performant: Adaboost. Enfin, on montre les performances d'Adaboost par rapport aux bornes sur l'erreur de généralisation.
+	
 	\section{Principe du boosting}
 	
 	Le boosting est une méthode permettant d'augmenter les performances\\ d'algorithmes weak learners (voir def.~\ref{def:weaklearner}). Cette méthode permet aussi de résoudre deux problèmes
@@ -272,6 +276,10 @@
 	\end{align}
 
 	Un point important de ce développement est que la dimension VC de l'ensemble des hypothèse produites par AdaBoost augmente linéairement avec la dimension VC de $B$ et avec $T$, en ignorant les facteurs constants et logarithmiques.
+	
+	\section{Conclusion}
+	
+	Le boosting est donc une approche très intéressante dans la recherche de la meilleure hypothèse tout en limitant la complexité et les temps de calcul. En particulier, l'algorithme Adaboost permet d'obtenir des résultats probants dans ce domaine. 	
 	
 	\bibliographystyle{alpha}
 	\bibliography{report}
