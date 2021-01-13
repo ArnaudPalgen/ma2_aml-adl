@@ -98,8 +98,8 @@
 	l'hypothèse résultante pourrait être trop complexe et trop spécifique au jeu de données
 	d'entrainement (tradeoff biais-complexité). Pour solutionner ces problèmes, on utilise le 
 	boosting: une approche permettant d'augmenter les performances d'algorithmes de recherche 
-	d'hypothèse simples (weak learners). Ce rapport explique le principe général du boosting,
-	présente en détail l'algorithme de boosting AdaBoost, et montre
+	d'hypothèse simple (weak learners). Ce rapport explique le principe général du boosting,
+	présente en détails l'algorithme de boosting AdaBoost et
 	les performances de celui-ci par rapport aux bornes sur l'erreur de généralisation.
 	
 	\section{Principe du boosting}
@@ -123,22 +123,23 @@
 	$L_{(\mathcal{D},f)} = \underset{x \sim \mathcal{D}}{\mathbb{P}} [h(x) \neq f(x)]$.
 	\end{definition}	
 	
-	\begin{definition} Un algorithme \textit{A} est un $\gamma$-weak learner pour une classe
-		d'hypothèses $\mathcal{H}$ s'il existe une fonction $m_{\mathcal{H}}: (0,1) \rightarrow
+	\begin{definition} Dans la classification binaire, un algorithme \textit{A} est un $\gamma$-weak learner pour une classe d'hypothèses $\mathcal{H}$ s'il existe une fonction $m_{\mathcal{H}}: (0,1) \rightarrow
 		\mathbb{N}$ telle que, pour tout $\delta \in (0,1)$, pour toute distribution des probabilités
 		$\mathcal{D}$ sur $\mathcal{X}$ et pour chaque fonction de labellisation binaire $f:\mathcal{X}
 		\rightarrow \{\pm 1\}$, si on émet l'hypothèse qu'il existe une hypothèse $h \in \mathcal H$
 		telle que $L_{D,f}(h)=0$, alors, lors de l'exécution de l'algorithme d'apprentissage sur
 		$m \geq m_{\mathcal{H}}(\delta)$ exemples (indépendants et identiquement distribués) générés
 		par $\mathcal{D}$ et labelisés par $f$, l'algorithme retourne, avec une probabilité
-		$1- \delta$, une hypothèse \textit{h} tel que $L_{(\mathcal{D}, f)}(h) \leq \frac{1}{2} - \gamma$.
+		$1- \delta$, une hypothèse \textit{h} tel que $L_{(\mathcal{D}, f)}(h) \leq \frac{1}{2} - \gamma$ $(\gamma \in [0,\frac{1}{2}])$.
 		\label{def:weaklearner}
 	\end{definition}
+	
+	Dans la définition \ref{def:weaklearner}, le terme $\gamma$ est là pour exprimer le fait que l'erreur sur l'hypothèse d'un weak learner doit être légèrement meilleure (plus proche de zéro) que l'erreur faite par un classifieur aléatoire. La borne sur l'erreur est donc beaucoup moins contraignante que la borne imposée par les classifieurs PAC (probablement approximativement correct).
 	
 	\renewcommand{\labelitemi}{$\bullet$}
 	\section{AdaBoost}
 	
-	AdaBoost (adaptative boosting) est une technique de boosting très répandue. L'article \cite{Bousquet2003-oz} (chapitre 10) présente son fonctionnement. Dans cette section, on explique le principe d'AdaBoost et on présente son algorithme.  
+	AdaBoost (adaptative boosting) est une technique de boosting très répandue. L'article \cite{Bousquet2003-oz} (chapitre 10) présente son fonctionnement. Dans cette section, on explique le principe d'AdaBoost pour une classification binaire et on présente son algorithme.  
 	
 	\subsection{Principe}
 	
@@ -158,20 +159,20 @@
 	De fait, plus le poids $D^{(t)}_i$ ($1 \leq i \leq m$ et $1 \leq t \leq T$) est grand, plus
 	celui-ci doit accorder d'importance à l'exemple $(x_i,y_i)$ et inversement. Une fois que cela
 	est fait, AdaBoost va itérer $T$ fois le même procédé. A chaque itération, le weak learner
-	s'entraine sur le jeu de données $S$. L'erreur d'entrainement $R_m(h_t)$ du weak learner $h_t$ est
+	s'entraine sur le jeu de données $S$. L'erreur d'entrainement $R_m(h_t)$ du weak learner (qui produit l'hypothèse $h_t$) est
 	calculée selon $D^{(t)}$:
 	\begin{equation}
 		\label{adaboost:trainingerror}
 		R_m(h_t) = \sum_{i=1}^m D^{(t)}_i \mathbb{1}_{[h_t(x_i) \neq y_i]}
 	\end{equation}
-	Comme on le voit dans (\ref{adaboost:trainingerror}), plus le poids d'un exemple (dans $D^{(t)}$) est grand, plus il a d'importance dans le calcul de l'erreur. De plus, par définition du weak learner, il y a une grande probabilité ($1- \delta$) que $R_m(h_t)< \frac{1}{2} - \gamma$. Ainsi, à l'itération $t$, le weak learner fournit une hypothèse $h_t$ et l'erreur $R_m(h_t)$ associée (\ref{adaboost:trainingerror}). AdaBoost détermine ensuite la nouvelle distribution $D^{(t+1)}$ (\ref{adaboost:newdistrib}) et passe à l'itération $t+1$. Une fois que les $T$ itérations sont terminées, AdaBoost combine les différentes hypothèses $h_t$ pour obtenir l'hypothèse finale $h$:
+	Comme on le voit dans (\ref{adaboost:trainingerror}), plus le poids d'un exemple (dans $D^{(t)}$) est grand, plus il a d'importance dans le calcul de l'erreur. De plus, par définition du weak learner, il y a une grande probabilité ($1- \delta$) que $R_m(h_t)< \frac{1}{2} - \gamma$ ($\gamma \in [0,\frac{1}{2}]$). Ainsi, à l'itération $t$, le weak learner fournit une hypothèse $h_t$ et l'erreur $R_m(h_t)$ associée (\ref{adaboost:trainingerror}). AdaBoost détermine ensuite la nouvelle distribution $D^{(t+1)}$ (\ref{adaboost:newdistrib}) et passe à l'itération $t+1$. Une fois que les $T$ itérations sont terminées, AdaBoost combine les différentes hypothèses $h_t$ pour obtenir l'hypothèse finale $h$ (classification binaire):
 	\begin{equation}
 		\label{adaboost:finalhypo}
 		h(x) = sign (\sum_{t=1}^T w_t h_t(x))
 	\end{equation}
 	Dans (\ref{adaboost:finalhypo}), on remarque que l'hypothèse $h_t$ a un poids $w_t$.
 	Celui-ci est en fait calculé à l'itération $t$ après le calcul de l'erreur:
-	$w_t = \frac{1}{2} log(\frac{1}{R_m(h_t)} - 1)$. Plus l'erreur d'entrainement de l'hypothèse $h_t$
+	$w_t = \frac{1}{2} \log(\frac{1}{R_m(h_t)} - 1)$. Plus l'erreur d'entrainement de l'hypothèse $h_t$
 	est petite, plus elle aura d'importance dans l'hypothèse finale $h$ et inversement.
 	AdaBoost essaie ainsi de donner plus d'importance aux hypothèses prometteuses qu'aux hypothèses
 	moins performantes.
@@ -184,11 +185,12 @@
 		\label{adaboost:weights}
 		\forall 1 \leq i \leq m, D^{(t+1)}_i = \frac{D^{(t)}_i e^{-w_t y_i h_t(x_i)}}{\sum_{j=1}^m D^{(t)}_j e^{-w_t y_j h_t(x_j)}} 
 	\end{equation}   
-	Dans (\ref{adaboost:weights}) on remarque que le nouveau poids $D^{(t+1)}_i$ de l'exemple $(x_i,y_i)$ est proportionnel à son ancien poids $D^{t}_i$, cela permet à AdaBoost de limiter la variance. De plus, si on suppose que $w_t > 0$ (ce qui est vrai dans la majorité des cas car $w_t > 0 \Leftrightarrow R_m(h_t) < \frac{1}{2}$ et il y a une probabilité supérieure à $1-\delta$ que cela soit vrai (en effet, $R_m(h_t) < \frac{1}{2} - \gamma$ avec une probabilité $1-\delta$)), on a que:
+	Dans (\ref{adaboost:weights}) on remarque que le nouveau poids $D^{(t+1)}_i$ de l'exemple $(x_i,y_i)$ est proportionnel à son ancien poids $D^{t}_i$, cela permet à AdaBoost de limiter la variance. De plus, si on suppose que $w_t > 0$, on a que (pour une classification binaire):
 	\begin{itemize}
 		\item si $sign(y_i)=sign(h_t(x_i))$ alors $e^{-w_t y_i h_t(x_i)} < 1$,
 		\item si $sign(y_i) \neq sign(h_t(x_i))$ alors $e^{-w_t y_i h_t(x_i)} > 1$. 
 	\end{itemize}
+	L'hypothèse précédente est vraie dans la majorité des cas car $w_t > 0 \Leftrightarrow R_m(h_t) < \frac{1}{2}$ et il y a une probabilité supérieure à $1-\delta$ que cela soit vrai, en effet, $R_m(h_t) < \frac{1}{2} - \gamma$ ($\gamma \in [0,\frac{1}{2}]$) avec une probabilité $1-\delta$.
 	Ainsi, si l'hypothèse $h_t$ avait fait la bonne prédiction pour l'exemple $(x_i,y_i)$ alors le nouveau poids $D^{(t+1)}_i$ sera plus grand que si elle s'était trompée. Cela est en accord avec le fait qu'AdaBoost incite le weak learner à se concentrer sur les exemples problématiques (et donc pertinents).
 	Le dénominateur est uniquement là pour normaliser et assurer la définition de distribution: $\forall 1 \leq t \leq T, \sum_{i=1}^m D^t_i = 1$.
 	
@@ -200,7 +202,7 @@
 			\textbf{INPUT:} $S=(x_1,y_1)(x_2,y_2),...,(x_m,y_m)$, le jeu de données d'entrainement,\\
 			\hspace{1.5cm} $WL$, un weak learner,\\
 			\hspace{1.5cm} $T$, un naturel (non nul) représentant le nombre d'itérations d'AdaBoost.\\
-			\textbf{OUTPUT:} l'hypothèse finale $h_f$
+			\textbf{OUTPUT:} l'hypothèse finale $h$
 		\end{flushleft}
 		\begin{algorithmic}[1]
 			\Function{$AdaBoost$}{$S,WL,T$}
@@ -208,7 +210,7 @@
 			\For {$t=1,...,T$}
 			\State $h_t = WL(D^{(t)},S)$
 			\State $R_m(h_t)= \sum_{i=1}^m D^{(t)}_i \mathbb{1}_{[h_t(x_i) \neq y_i]}$
-			\State $w_t = \frac{1}{2} log(\frac{1}{E_t(h_t)} - 1)$
+			\State $w_t = \frac{1}{2} log(\frac{1}{R_m(h_t)} - 1)$
 			\For {$i=1,...,m$}
 			\State $D^{(t+1)}_i = \frac{D^{(t)}_i e^{-w_t y_i h_t(x_i)}}{\sum_{j=1}^m D^{(t)}_j e^{-w_t y_j h_t(x_j)}}$ 
 			\EndFor
