@@ -106,10 +106,10 @@
 	
 	Le boosting est une méthode permettant d'augmenter les performances\\ d'algorithmes weak learners
 	(voir def.~\ref{def:weaklearner}). Cette méthode permet aussi de résoudre deux problèmes
-	rencontrés lors de l'apprentissage:
+	rencontrés lors de l'apprentissage :
 	\begin{enumerate}
 		\item Le tradeoff biais-complexité
-		\item La complexité des calculs
+		\item La complexité des calculs.
 	\end{enumerate}
 	
 	Le principe général du boosting consiste à commencer par une hypothèse de base,
@@ -232,7 +232,7 @@
 	L(B, T) = \Set{ x \mapsto \text{sign}\left( \sum_{t=1}^T w_t h_t(x) \right) \mid \forall t, w_t \in \R \land h_t \in B}.
 	\]
 	
-	Pour un espace d'hypothèses $\mathcal{H}$, nous dénotons $d_{VC}(\mathcal{H})$ sa dimension VC et $m_{\mathcal{H}}$ sa growth function.
+	Pour un espace d'hypothèses $\mathcal{H}$, nous dénotons $d_{VC}(\mathcal{H})$ sa dimension VC et $G_{\mathcal{H}}$ sa growth function.
 	
 	\begin{theorem}{(Dimension VC d'AdaBoost)}
 		
@@ -251,17 +251,20 @@
 	Ensuite, un vecteur $w \in \R^T$ permet de créer la combinaison linéaire $\sum_{t=1}^T w_t h_t(x)$ pour un point $x$.
 	On obtient ainsi un labeling $(h(x_1), ..., h(x_m))$ de $C$.
 	
-	Nous allons utiliser le lemme de Sauer, qui permet de borner supérieurement la growth function $m_{\mathcal{H}}$ d'un espace d'hypothèses $\mathcal{H}$ en utilisant la VC dimension $d_{VC}(\mathcal{H})$ :
+	Nous allons utiliser le lemme de Sauer, qui permet de borner supérieurement la growth function $G_{\mathcal{H}}$ d'un espace d'hypothèses $\mathcal{H}$ en utilisant la dimension VC $d_{VC}(\mathcal{H})$ :
 	\[
-	m_{\mathcal{H}}(m) \leq \left( \frac{em}{d_{VC}(\mathcal{H})} \right) ^{d_{VC}(\mathcal{H})}.
+	G_{\mathcal{H}}(m) \leq \left( \frac{em}{d_{VC}(\mathcal{H})} \right) ^{d_{VC}(\mathcal{H})}.
 	\]
 	
 	Par le lemme de Sauer, au plus $\left( \frac{em}{d} \right)^{d}$ labelings différents de $C$ peuvent être créés à partir de l'espace d'hypothèses $B$.
 	De plus, $T$ hypothèses qui créent ces labelings doivent être choisies, ce qui donne au plus $\left( \frac{em}{d} \right) ^{d T}$ labelings différents.
-	En utilisant encore le lemme de Sauer, puisque la dimension VC d'un perceptron (sans biais) dans $\R^T$ est de $T$, la combinaison linéaire entraîne $\left( \frac{em}{T} \right)^{T}$ labelings différents.
+	
+	On sait que la dimension VC d'un perceptron (sans biais) dans $\R^T$ est de $T$.
+	Tout comme AdaBoost renvoie le signe d'une combinaison linéaire d'hypothèses apprises par un weak learner, un perceptron renvoie le signe d'une combinaison linéaire de ses entrées.
+	En utilisant encore le lemme de Sauer, on multiplie la borne précédente par $\left( \frac{em}{T} \right)^{T}$.
 	Nous avons donc :
 	\[
-	m_{L(B, T)}(m) \leq \left( \frac{em}{d} \right) ^{d T} \left( \frac{em}{T} \right)^{T}.
+	G_{L(B, T)}(m) \leq \left( \frac{em}{d} \right) ^{d T} \left( \frac{em}{T} \right)^{T}.
 	\]
 	
 	En utilisant les hypothèses que $T \geq 3$ et $d_{VC}(B) \geq 3$, nous avons :
@@ -269,11 +272,10 @@
 	\left( \frac{em}{d} \right) ^{d T} \left( \frac{em}{T} \right)^{T} \leq m^{(d + 1) T}.
 	\]
 	
-	Puisque $C$ est shattered par $L(B, T)$, $m_{L(B, T)}(m) = 2^m$.
-	
+	Puisque $C$ est shattered par $L(B, T)$, $G_{L(B, T)}(m) = 2^m$.
 	Nous avons donc :
 	\[
-	2^m = m_{L(B, T)}(m) \leq m^{(d + 1) T}
+	2^m = G_{L(B, T)}(m) \leq m^{(d + 1) T}
 	\]
 	
 	En passant au log :
@@ -305,13 +307,13 @@
 	
 	En supposant que la loss produit des valeurs bornées dans $[0, 1]$, pour toute précision $\epsilon > 0$, on obtient :
 	\begin{align}
-	\mathbb{P}\left[ \sup_{h \in L(B, T)} (R(h) - R_m(h)) \geq \epsilon \right] &\leq 4 m_{L(B, T)}(2 m) e^{-m \epsilon^2 / 8} \label{eq:vc_inequality} \\
+	\mathbb{P}\left[ \sup_{h \in L(B, T)} (R(h) - R_m(h)) \geq \epsilon \right] &\leq 4 G_{L(B, T)}(2 m) e^{-m \epsilon^2 / 8} \label{eq:vc_inequality} \\
 	&\leq 4 \left( \frac{2 m e}{d_{VC}(L(B, T))} \right)^{d_{VC}(L(B, T))} e^{-m \epsilon^2 / 8}. \label{eq:vc_inequality_sauer}
 	\end{align}
 
 	Un point important de ce développement est que la dimension VC de l'ensemble des hypothèses produites par AdaBoost augmente linéairement avec la dimension VC de $B$ et avec $T$, en ignorant les facteurs constants et logarithmiques.
 	
-	\section{Conclusion}
+	\section*{Conclusion}
 	
 	Le boosting est donc une approche très intéressante dans la recherche de la meilleure hypothèse tout en limitant la complexité et les temps de calcul. En particulier, l'algorithme Adaboost permet d'obtenir des résultats probants dans ce domaine. 	
 	
